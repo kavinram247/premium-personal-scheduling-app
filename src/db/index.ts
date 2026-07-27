@@ -4,6 +4,7 @@ import type { PlannerEvent, Priority, Recurring } from "@/lib/types";
 /** Shape of an event document stored in MongoDB. */
 export interface EventDoc {
   _id: string;
+  userId: string;
   title: string;
   notes: string | null;
   location: string | null;

@@ -1,23 +1,24 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import {
   eventsCollection,
   isDbConfigured,
   toEvent,
-  type NewEvent,
+  type EventDoc,
 } from "@/db";
 import type { EventInput, Priority, Recurring } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 const SETUP_HINT =
-  "Database not configured. Set MONGODB_URI in a .env file (your MongoDB Atlas connection string) and restart the dev server.";
+  "Database not configured. Set MONGODB_URI in a .env file (your MongoDB Atlas connection string).";
 
 function unavailable() {
   return NextResponse.json({ error: SETUP_HINT }, { status: 503 });
 }
 
-function sanitizePatch(input: Partial<EventInput>): Partial<NewEvent> {
-  const patch: Partial<NewEvent> = {};
+function sanitizePatch(input: Partial<EventInput>): Partial<Omit<EventDoc, "_id" | "userId" | "createdAt">> {
+  const patch: Partial<Omit<EventDoc, "_id" | "userId" | "createdAt">> = {};
   if (input.title !== undefined)
     patch.title = String(input.title).trim() || "Untitled event";
   if (input.notes !== undefined)
@@ -48,17 +49,22 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   if (!isDbConfigured) return unavailable();
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { id } = await params;
     const body = (await req.json()) as Partial<EventInput>;
     const patch = sanitizePatch(body);
     const updated = await eventsCollection.findOneAndUpdate(
-      { _id: id },
+      { _id: id, userId },
       { $set: patch },
       { returnDocument: "after", includeResultMetadata: false }
     );
     if (!updated) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found or permission denied" }, { status: 404 });
     }
     return NextResponse.json(toEvent(updated));
   } catch (err) {
@@ -72,9 +78,17 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   if (!isDbConfigured) return unavailable();
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const { id } = await params;
-    await eventsCollection.deleteOne({ _id: id });
+    const result = await eventsCollection.deleteOne({ _id: id, userId });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Not found or permission denied" }, { status: 404 });
+    }
     return NextResponse.json({ ok: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";

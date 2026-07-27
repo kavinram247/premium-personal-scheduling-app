@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { UserButton, useUser } from "@clerk/nextjs";
 import type { PlannerEvent } from "@/lib/types";
 import { getCategory, PRIORITIES } from "@/lib/categories";
 import {
@@ -17,6 +19,39 @@ import {
 import { IconBell, IconCheck, IconClock } from "./icons";
 
 /* ---------- shared bits ---------- */
+
+export function UserProfileCard() {
+  const { isSignedIn, user } = useUser();
+  return (
+    <Card className="mb-1">
+      {isSignedIn ? (
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <UserButton />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-bold text-slate-900">
+                {user?.fullName || user?.firstName || "My Account"}
+              </p>
+              <p className="truncate text-[11px] font-medium text-slate-500">
+                {user?.primaryEmailAddress?.emailAddress}
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-semibold text-slate-600">Guest User</span>
+          <Link
+            href="/sign-in"
+            className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow hover:bg-slate-800 transition"
+          >
+            Sign In
+          </Link>
+        </div>
+      )}
+    </Card>
+  );
+}
 
 export function ProgressRing({
   value,
@@ -163,6 +198,7 @@ export function DaySidebar({
 
   return (
     <div className="flex flex-col gap-3">
+      <UserProfileCard />
       <Card>
         <div className="flex items-center gap-4">
           <ProgressRing value={dayEvents.length ? done.length / dayEvents.length : 0} color="#0f172a">
@@ -268,6 +304,7 @@ export function WeekSidebar({
 
   return (
     <div className="flex flex-col gap-3">
+      <UserProfileCard />
       <Card>
         <div className="flex items-center justify-between">
           <div>
@@ -374,6 +411,7 @@ export function WeekendSidebar({
 
   return (
     <div className="flex flex-col gap-3">
+      <UserProfileCard />
       <Card>
         <div className="flex items-center justify-between">
           <div>
