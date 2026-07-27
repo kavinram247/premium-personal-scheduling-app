@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { IconCalendar, IconCheck, IconClock, IconSun } from "@/components/planner/icons";
+
+/*
+ * AuthLayout — inspired by Linear / Vercel / Raycast auth screens.
+ * Stripped of gradient orbs and fake mockups. Typography-driven,
+ * restrained palette, one accent color, generous whitespace.
+ */
 
 export function AuthLayout({
   children,
@@ -11,154 +16,187 @@ export function AuthLayout({
   mode: "sign-in" | "sign-up";
 }) {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col lg:flex-row selection:bg-indigo-500 selection:text-white">
-      {/* LEFT PANEL - Hero Branding & Dynamic Planner Showcase */}
-      <div className="relative hidden lg:flex lg:w-1/2 flex-col justify-between p-12 overflow-hidden border-r border-slate-800/60 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950/40">
-        {/* Background Ambient Glow Orbs */}
-        <div className="pointer-events-none absolute -top-24 -left-24 h-[500px] w-[500px] rounded-full bg-indigo-600/20 blur-[130px]" />
-        <div className="pointer-events-none absolute top-1/2 -right-24 h-[500px] w-[500px] rounded-full bg-violet-600/20 blur-[130px]" />
+    <div className="min-h-screen bg-[#0a0a0b] text-white font-sans antialiased selection:bg-white/20">
+      {/* Subtle top-edge light — one single design move */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
 
-        {/* Top Branding */}
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-500 to-violet-600 text-white shadow-xl shadow-indigo-500/25">
-            <IconCalendar size={24} />
-          </div>
-          <div>
-            <span className="text-xl font-black tracking-tight text-white">LifePlanner</span>
-            <span className="ml-2.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold text-indigo-300 uppercase tracking-widest">
-              Pro
+      <div className="flex min-h-screen flex-col lg:flex-row">
+        {/* ─── LEFT: Brand + Copy ─── */}
+        <div className="hidden lg:flex lg:w-[45%] flex-col justify-between px-16 py-14">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 group w-fit">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-white/90"
+            >
+              <rect x="3" y="4.5" width="18" height="16.5" rx="2.5" />
+              <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
+            </svg>
+            <span className="text-[15px] font-semibold tracking-[-0.01em] text-white/90">
+              LifePlanner
             </span>
-          </div>
-        </div>
+          </Link>
 
-        {/* Interactive Mockup Preview Card */}
-        <div className="relative z-10 my-auto py-8">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-slate-900/80 px-4 py-1.5 text-xs font-semibold text-indigo-300 backdrop-blur-xl shadow-lg">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            Live Multi-Tenant Personal Schedule
-          </div>
+          {/* Central copy */}
+          <div className="max-w-sm">
+            <h1 className="text-[32px] font-semibold leading-[1.2] tracking-[-0.025em] text-white">
+              Plan with
+              <br />
+              intention.
+            </h1>
+            <p className="mt-4 text-[15px] leading-relaxed text-white/40">
+              A personal schedule built around your priorities —
+              not the other way around.
+            </p>
 
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            Designed for high performers who value their time.
-          </h2>
-
-          {/* Floating UI Mock Cards */}
-          <div className="mt-8 flex flex-col gap-3.5 max-w-lg">
-            <div className="group rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-xl backdrop-blur-xl transition hover:border-indigo-500/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="h-10 w-1.5 rounded-full bg-indigo-500" />
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Deep Work Sprint & Strategy</h4>
-                    <p className="text-xs text-slate-400 font-medium mt-0.5 flex items-center gap-1.5">
-                      <IconClock size={12} className="text-indigo-400" />
-                      09:00 AM – 11:30 AM · Work
-                    </p>
+            {/* Minimal social proof / feature list */}
+            <div className="mt-10 flex flex-col gap-3">
+              {[
+                "Day, week, and weekend views",
+                "Private per-user data isolation",
+                "Drag-to-schedule in seconds",
+              ].map((line) => (
+                <div key={line} className="flex items-center gap-3">
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.04]">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-white/50"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
                   </div>
+                  <span className="text-[13px] text-white/40">{line}</span>
                 </div>
-                <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-bold text-indigo-300 border border-indigo-500/20">
-                  High Priority
-                </span>
-              </div>
-            </div>
-
-            <div className="group rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-xl backdrop-blur-xl transition hover:border-emerald-500/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="h-10 w-1.5 rounded-full bg-emerald-500" />
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Outdoor Workout & Recovery</h4>
-                    <p className="text-xs text-slate-400 font-medium mt-0.5 flex items-center gap-1.5">
-                      <IconClock size={12} className="text-emerald-400" />
-                      05:00 PM – 06:15 PM · Fitness
-                    </p>
-                  </div>
-                </div>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
-                  <IconCheck size={16} />
-                </span>
-              </div>
+              ))}
             </div>
           </div>
+
+          {/* Bottom */}
+          <p className="text-[12px] text-white/20">
+            &copy; {new Date().getFullYear()} LifePlanner
+          </p>
         </div>
 
-        {/* Bottom Quote */}
-        <div className="relative z-10 border-t border-slate-800/60 pt-6 flex items-center justify-between text-xs text-slate-400 font-medium">
-          <p>&copy; {new Date().getFullYear()} LifePlanner — Engineered for Clarity</p>
-          <div className="flex items-center gap-2">
-            <IconSun size={14} className="text-amber-400" />
-            <span>Smart Time Analytics</span>
-          </div>
-        </div>
-      </div>
-
-      {/* RIGHT PANEL - Auth Form Container */}
-      <div className="relative flex-1 flex flex-col justify-center items-center p-6 sm:p-12 overflow-y-auto">
-        {/* Background Ambient Glow */}
-        <div className="pointer-events-none absolute -bottom-32 -right-32 h-[450px] w-[450px] rounded-full bg-violet-600/15 blur-[120px]" />
-
-        {/* Top Header for Mobile */}
-        <div className="lg:hidden mb-8 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/25">
-            <IconCalendar size={22} />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-white">LifePlanner</span>
-        </div>
-
-        {/* Auth Box Container */}
-        <div className="relative z-10 w-full max-w-md">
-          {/* Custom Tab Switcher */}
-          <div className="mb-6 flex rounded-2xl bg-slate-900/90 p-1.5 border border-slate-800/80 backdrop-blur-xl shadow-lg">
-            <Link
-              href="/sign-in"
-              className={`flex-1 rounded-xl py-2.5 text-center text-xs font-bold transition duration-200 ${
-                mode === "sign-in"
-                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
-                  : "text-slate-400 hover:text-slate-200"
-              }`}
+        {/* ─── RIGHT: Auth form ─── */}
+        <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 lg:px-16 lg:border-l lg:border-white/[0.06]">
+          {/* Mobile logo */}
+          <Link href="/" className="mb-10 flex items-center gap-2.5 lg:hidden">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-white/90"
             >
-              Sign In
-            </Link>
-            <Link
-              href="/sign-up"
-              className={`flex-1 rounded-xl py-2.5 text-center text-xs font-bold transition duration-200 ${
-                mode === "sign-up"
-                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
-                  : "text-slate-400 hover:text-slate-200"
-              }`}
-            >
-              Create Account
-            </Link>
-          </div>
+              <rect x="3" y="4.5" width="18" height="16.5" rx="2.5" />
+              <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
+            </svg>
+            <span className="text-[15px] font-semibold tracking-[-0.01em] text-white/90">
+              LifePlanner
+            </span>
+          </Link>
 
-          {/* Form Children */}
-          <div className="flex justify-center">{children}</div>
+          <div className="w-full max-w-[380px]">
+            {/* Tabs */}
+            <div className="mb-8 flex gap-1 rounded-lg bg-white/[0.04] p-1">
+              <Link
+                href="/sign-in"
+                className={`flex-1 rounded-md py-2 text-center text-[13px] font-medium transition-all duration-150 ${
+                  mode === "sign-in"
+                    ? "bg-white/[0.09] text-white shadow-sm"
+                    : "text-white/35 hover:text-white/55"
+                }`}
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/sign-up"
+                className={`flex-1 rounded-md py-2 text-center text-[13px] font-medium transition-all duration-150 ${
+                  mode === "sign-up"
+                    ? "bg-white/[0.09] text-white shadow-sm"
+                    : "text-white/35 hover:text-white/55"
+                }`}
+              >
+                Create account
+              </Link>
+            </div>
+
+            {/* Clerk form slot */}
+            <div className="flex justify-center">{children}</div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+/*
+ * Clerk appearance — dark, minimal, no gradients.
+ * Inputs and buttons feel native to the page, not a Clerk embed.
+ */
 export const clerkAppearance = {
   elements: {
-    rootBox: "w-full flex justify-center",
-    card: "bg-slate-900/90 border border-slate-800/80 shadow-2xl backdrop-blur-2xl rounded-3xl p-6 sm:p-8 w-full text-slate-100",
-    headerTitle: "text-2xl font-extrabold text-white tracking-tight font-sans text-center",
-    headerSubtitle: "text-slate-400 text-xs font-medium text-center mt-1",
+    rootBox: "w-full",
+    cardBox: "shadow-none w-full",
+    card: "bg-transparent shadow-none border-none p-0 w-full gap-6",
+
+    // Header
+    headerTitle: "text-[20px] font-semibold text-white tracking-[-0.02em]",
+    headerSubtitle: "text-[13px] text-white/35 mt-1 font-normal",
+
+    // Social / OAuth buttons
     socialButtonsBlockButton:
-      "bg-slate-950/80 hover:bg-slate-800 border border-slate-800 text-slate-200 rounded-xl transition duration-200 font-semibold text-xs py-3 shadow-sm",
-    socialButtonsBlockButtonText: "font-bold text-slate-200 text-xs",
-    dividerLine: "bg-slate-800/80",
-    dividerText: "text-slate-500 text-[11px] uppercase tracking-widest font-extrabold",
-    formFieldLabel: "text-slate-300 text-[11px] font-bold uppercase tracking-wider mb-1.5",
+      "bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.08] text-white/80 rounded-lg transition-colors duration-150 text-[13px] font-medium py-2.5",
+    socialButtonsBlockButtonText: "text-white/80 text-[13px] font-medium",
+    socialButtonsBlockButtonArrow: "text-white/30",
+
+    // Divider
+    dividerLine: "bg-white/[0.06]",
+    dividerText: "text-white/25 text-[11px] uppercase tracking-[0.1em] font-medium",
+
+    // Form fields
+    formFieldLabel: "text-white/50 text-[12px] font-medium mb-1.5",
     formFieldInput:
-      "bg-slate-950/80 border border-slate-800/90 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-white rounded-xl text-sm px-4 py-3 transition duration-200 font-medium placeholder:text-slate-600",
+      "bg-white/[0.04] border border-white/[0.08] focus:border-white/20 focus:ring-1 focus:ring-white/10 text-white rounded-lg text-[14px] px-3.5 py-2.5 transition-colors duration-150 font-normal placeholder:text-white/20",
+    formFieldInputShowPasswordButton: "text-white/30 hover:text-white/50",
+
+    // Primary button
     formButtonPrimary:
-      "bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 text-white font-bold text-sm py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-500/30 transition duration-200 transform hover:-translate-y-0.5 w-full mt-2",
-    footerActionLink: "text-indigo-400 hover:text-indigo-300 font-bold text-xs transition",
-    identityPreviewText: "text-slate-300 font-medium text-sm",
-    formHeaderTitle: "text-white font-bold text-lg",
-    formHeaderSubtitle: "text-slate-400 text-xs",
-    footer: "hidden", // Clean look without bottom default footer
+      "bg-white text-[#0a0a0b] hover:bg-white/90 font-semibold text-[13px] py-2.5 rounded-lg shadow-none transition-colors duration-150 w-full mt-1",
+
+    // Links
+    footerActionLink: "text-white/50 hover:text-white/70 font-medium text-[13px] transition-colors duration-150",
+
+    // Identity preview
+    identityPreviewText: "text-white/60 font-medium text-[13px]",
+    identityPreviewEditButton: "text-white/40 hover:text-white/60",
+
+    // Internal form header (verification step etc.)
+    formHeaderTitle: "text-white font-semibold text-[17px] tracking-[-0.01em]",
+    formHeaderSubtitle: "text-white/35 text-[13px] font-normal",
+
+    // Alert
+    alert: "bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-[13px]",
+
+    // Footer
+    footer: "hidden",
   },
 };
