@@ -3,18 +3,14 @@
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import PlannerApp from "@/components/planner/PlannerApp";
-import { IconCalendar, IconClock, IconLeaf, IconSun } from "@/components/planner/icons";
 
 export default function HomePage() {
   const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
-        <div className="flex items-center gap-3">
-          <span className="h-5 w-5 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
-          <span className="text-sm font-medium">Loading your planner...</span>
-        </div>
+      <div className="min-h-screen bg-[#0a0a0b] flex items-center justify-center">
+        <div className="h-4 w-4 rounded-full border-2 border-white/20 border-t-white/60 animate-spin" />
       </div>
     );
   }
@@ -24,105 +20,151 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
-      <div className="relative overflow-hidden min-h-screen flex flex-col justify-between">
-        {/* Background Gradient Orbs */}
-        <div className="pointer-events-none absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-indigo-600/20 blur-[140px]" />
-        <div className="pointer-events-none absolute top-1/2 -right-40 h-[600px] w-[600px] rounded-full bg-violet-600/20 blur-[140px]" />
+    <main className="min-h-screen bg-[#0a0a0b] text-white font-sans antialiased selection:bg-white/20">
+      {/* Top-edge light */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
 
-        {/* Navigation Bar */}
-        <header className="relative z-10 mx-auto max-w-7xl w-full px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25">
-              <IconCalendar size={22} />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white">LifePlanner</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/sign-in"
-              className="text-sm font-semibold text-slate-300 hover:text-white transition"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/sign-up"
-              className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/30 hover:bg-indigo-500 transition"
-            >
-              Get Started Free
-            </Link>
-          </div>
-        </header>
+      {/* Nav */}
+      <header className="mx-auto flex w-full max-w-[1080px] items-center justify-between px-6 pt-8 pb-4">
+        <Link href="/" className="flex items-center gap-2.5">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white/80">
+            <rect x="3" y="4.5" width="18" height="16.5" rx="2.5" />
+            <path d="M3 9.5h18M8 2.5v4M16 2.5v4" />
+          </svg>
+          <span className="text-[15px] font-semibold tracking-[-0.01em] text-white/80">
+            LifePlanner
+          </span>
+        </Link>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/sign-in"
+            className="text-[13px] font-medium text-white/40 hover:text-white/70 transition-colors duration-150"
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/sign-up"
+            className="rounded-lg bg-white px-3.5 py-2 text-[13px] font-semibold text-[#0a0a0b] hover:bg-white/90 transition-colors duration-150"
+          >
+            Get started
+          </Link>
+        </div>
+      </header>
 
-        {/* Hero Section */}
-        <section className="relative z-10 mx-auto max-w-5xl px-6 py-16 text-center flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-300 backdrop-blur-md mb-8">
-            <span className="h-2 w-2 rounded-full bg-indigo-400 animate-pulse" />
-            Multi-Tenant Personal Scheduler Powered by Clerk & MongoDB
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-3xl leading-[1.15]">
-            Master your day, week, and weekend effortlessly.
+      {/* Hero */}
+      <section className="mx-auto max-w-[1080px] px-6 pt-24 sm:pt-32 pb-20">
+        <div className="max-w-2xl">
+          <h1 className="text-[clamp(36px,5vw,56px)] font-semibold leading-[1.1] tracking-[-0.035em] text-white">
+            Your time,
+            <br />
+            structured.
           </h1>
-
-          <p className="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl font-normal leading-relaxed">
-            A high-precision personal day & week planner built for focus. Track events, priorities, reminders, and free time with absolute data privacy.
+          <p className="mt-5 max-w-md text-[16px] leading-[1.65] text-white/35">
+            A personal planner that fits the way you actually work.
+            Day view, week view, drag-to-schedule — no friction, no clutter.
           </p>
-
-          <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          <div className="mt-9 flex items-center gap-4">
             <Link
               href="/sign-up"
-              className="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-indigo-500/25 hover:opacity-95 transition transform hover:-translate-y-0.5 text-center"
+              className="rounded-lg bg-white px-5 py-2.5 text-[14px] font-semibold text-[#0a0a0b] hover:bg-white/90 transition-colors duration-150"
             >
-              Start Planning Now
+              Start for free
             </Link>
             <Link
               href="/sign-in"
-              className="w-full sm:w-auto rounded-2xl border border-slate-800 bg-slate-900/80 px-8 py-4 text-base font-semibold text-slate-300 hover:bg-slate-800 hover:text-white backdrop-blur-md transition text-center"
+              className="rounded-lg border border-white/[0.1] px-5 py-2.5 text-[14px] font-medium text-white/50 hover:text-white/70 hover:border-white/[0.16] transition-colors duration-150"
             >
-              Sign In to Account
+              Sign in
             </Link>
           </div>
+        </div>
+      </section>
 
-          {/* Feature Cards Grid */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-md">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 mb-4">
-                <IconSun size={20} />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Day & Week Views</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Interactive time grid scheduling with drag-to-create and instant event previews.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-md">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 mb-4">
-                <IconLeaf size={20} />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Multi-Tenant Isolation</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Powered by Clerk authentication & user-scoped MongoDB database storage.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur-md">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/10 text-violet-400 mb-4">
-                <IconClock size={20} />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Smart Free Time Analytics</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Real-time analytics on available free time, high-priority deadlines, and categories.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="relative z-10 border-t border-slate-900 py-8 px-6 text-center text-xs text-slate-500">
-          LifePlanner App &copy; {new Date().getFullYear()} — Multi-tenant Scheduling App
-        </footer>
+      {/* Divider */}
+      <div className="mx-auto max-w-[1080px] px-6">
+        <div className="h-px bg-white/[0.06]" />
       </div>
+
+      {/* Features — just text, no cards */}
+      <section className="mx-auto max-w-[1080px] px-6 py-20">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-16">
+          <div>
+            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.12em] text-white/20">
+              01
+            </div>
+            <h3 className="text-[15px] font-semibold text-white/80 leading-snug">
+              Three views, one surface
+            </h3>
+            <p className="mt-2 text-[13px] leading-[1.65] text-white/30">
+              Day, week, and weekend layouts — each with a time grid you can
+              click or drag to create events in seconds.
+            </p>
+          </div>
+          <div>
+            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.12em] text-white/20">
+              02
+            </div>
+            <h3 className="text-[15px] font-semibold text-white/80 leading-snug">
+              Your data, only yours
+            </h3>
+            <p className="mt-2 text-[13px] leading-[1.65] text-white/30">
+              Every account is isolated at the database level.
+              No shared calendars, no leaky permissions — just your schedule.
+            </p>
+          </div>
+          <div>
+            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.12em] text-white/20">
+              03
+            </div>
+            <h3 className="text-[15px] font-semibold text-white/80 leading-snug">
+              Built to stay out of your way
+            </h3>
+            <p className="mt-2 text-[13px] leading-[1.65] text-white/30">
+              Priorities, categories, reminders, free-time analytics —
+              the tools are there when you need them, invisible when you don&apos;t.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="mx-auto max-w-[1080px] px-6">
+        <div className="h-px bg-white/[0.06]" />
+      </div>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-[1080px] px-6 py-20 flex flex-col items-center text-center">
+        <h2 className="text-[clamp(24px,3.5vw,36px)] font-semibold tracking-[-0.03em] text-white">
+          Ready to take your time back?
+        </h2>
+        <p className="mt-3 text-[14px] text-white/30">
+          Free to use. No credit card required.
+        </p>
+        <Link
+          href="/sign-up"
+          className="mt-8 rounded-lg bg-white px-6 py-3 text-[14px] font-semibold text-[#0a0a0b] hover:bg-white/90 transition-colors duration-150"
+        >
+          Create your account
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer className="mx-auto max-w-[1080px] px-6 pb-10 pt-6">
+        <div className="h-px bg-white/[0.06] mb-6" />
+        <div className="flex items-center justify-between">
+          <p className="text-[12px] text-white/15">
+            &copy; {new Date().getFullYear()} LifePlanner
+          </p>
+          <div className="flex items-center gap-5">
+            <Link href="/sign-in" className="text-[12px] text-white/20 hover:text-white/40 transition-colors duration-150">
+              Sign in
+            </Link>
+            <Link href="/sign-up" className="text-[12px] text-white/20 hover:text-white/40 transition-colors duration-150">
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
